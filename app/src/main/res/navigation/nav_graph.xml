@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.furkan.sisalcase.ui.main.MainFragment"
+        android:label="MainFragment"
+        tools:layout="@layout/main_fragment">
+        <action
+            android:id="@+id/main_to_detail"
+            app:destination="@id/detailFragment"
+            app:popUpTo="@id/mainFragment"
+            app:popUpToInclusive="false"/>
+        <argument android:name="myArgs"
+            app:argType="com.furkan.sisalcase.data.model.ChildrenDetailModel"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.furkan.sisalcase.ui.detail.DetailFragment"
+        android:label="fragment_detail"
+        tools:layout="@layout/fragment_detail">
+
+    </fragment>
+
+</navigation>
