@@ -1,7 +1,6 @@
 package com.furkan.sisalcase.ui.main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,12 +11,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.furkan.sisalcase.R
 import com.furkan.sisalcase.data.model.ChildrenDetailModel
-import com.furkan.sisalcase.data.model.ChildrenModel
 import com.furkan.sisalcase.data.model.ListModel
 import com.furkan.sisalcase.databinding.MainFragmentBinding
 import com.furkan.sisalcase.ui.base.BaseFragment
 import com.furkan.sisalcase.ui.main.adapter.ImageAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.Serializable
 
 @AndroidEntryPoint
 class MainFragment : BaseFragment<MainFragmentBinding>() {
@@ -52,7 +51,7 @@ class MainFragment : BaseFragment<MainFragmentBinding>() {
                     binding.error.visibility = View.VISIBLE
             }
             else{
-                viewModel.getData(text.toString(),requireContext())
+                viewModel.getData(text.toString())
             }
         }
     }
@@ -86,7 +85,7 @@ class MainFragment : BaseFragment<MainFragmentBinding>() {
     private fun goDetail(data : ChildrenDetailModel){
         val navController = findNavController(requireActivity(), R.id.main)
         val bundle = Bundle()
-        bundle.putSerializable("data", data) // Serializable Object
+        bundle.putSerializable("data", data as Serializable) // Serializable Object
         navController.navigate(R.id.main_to_detail, bundle)
     }
 

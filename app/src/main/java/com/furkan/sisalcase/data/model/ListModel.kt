@@ -1,4 +1,5 @@
 package com.furkan.sisalcase.data.model
+import android.os.Parcelable
 import java.io.Serializable
 
 data class ListModel (
@@ -29,7 +30,7 @@ data class ChildrenDetailModel(
     val url_overridden_by_dest : String? = null,
     val url : String? = null,
     val preview : PreviewModel? = null
-):Serializable
+)
 
 data class PreviewModel(
     val images : ArrayList<Images>? = null,

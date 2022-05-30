@@ -17,44 +17,19 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(private val dataRepository: GalleryRepo) : ViewModel() {
-    val _getData: MutableLiveData<Resource<ListModel>> = MutableLiveData()
+    private val _getData: MutableLiveData<Resource<ListModel>> = MutableLiveData()
     val getData: LiveData<Resource<ListModel>?>
         get() = _getData
-    var searchNewsResponse: ListModel? = null
 
-    private val _error = MutableLiveData<String>()
-    val error: LiveData<String>
-        get() = _error
-
-
-
-    fun getData(searchQuery: String, context :Context) = viewModelScope.launch {
-        safeSearchNewCall(searchQuery, context)
+    fun getData(searchQuery: String) = viewModelScope.launch {
+        val response = dataRepository.getData(searchQuery)
+        _getData.postValue(handleSearchNewsResponse(response))
     }
 
-    private suspend fun safeSearchNewCall(searchQuery: String, context: Context){
-        _getData.postValue(Resource.Loading())
-        try{
-            if(hasInternetConnection(context)){
-                val response = dataRepository.getData(searchQuery)
-                _getData.postValue(handleSearchNewsResponse(response))
-            }
-            else
-                _getData.postValue(Resource.Error("No Internet Connection"))
-        }
-        catch (ex: Exception){
-            when(ex){
-                is IOException -> _getData.postValue(Resource.Error("Network Failure"))
-                else -> _getData.postValue(Resource.Error("Conversion Error"))
-            }
-        }
-    }
-
-    fun handleSearchNewsResponse(response: Response<ListModel>): Resource<ListModel> {
+    private fun handleSearchNewsResponse(response: Response<ListModel>): Resource<ListModel> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
-
-                return Resource.Success(searchNewsResponse ?: resultResponse)
+                return Resource.Success(getData.value?.data ?: resultResponse)
             }
         }
         return Resource.Error(response.message())
