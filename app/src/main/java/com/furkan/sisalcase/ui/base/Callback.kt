@@ -1,4 +1,4 @@
 package com.furkan.sisalcase.ui.base
 
-typealias Callback = (() -> Unit)
+typealias Callback<Any> = ((Any) -> Unit)
 typealias CallbackObject<T> = ((T) -> Unit)

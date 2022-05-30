@@ -1,12 +1,11 @@
-package com.furkan.sisalcase.ui.base.custom_layouts
+package com.furkan.sisalcase.ui.custom_layouts
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import androidx.core.widget.addTextChangedListener
 import com.furkan.sisalcase.databinding.CustomSearchBinding
 import com.furkan.sisalcase.ui.base.BaseLinearLayout
+import com.furkan.sisalcase.ui.base.Callback
 import com.furkan.sisalcase.ui.base.CallbackObject
 
 //┌──────────────────────────┐
@@ -20,14 +19,13 @@ import com.furkan.sisalcase.ui.base.CallbackObject
 class SearchBar(context: Context, attrs: AttributeSet? = null) :
     BaseLinearLayout<CustomSearchBinding>(context, attrs) {
 
-    var callbackOnTextChange: CallbackObject<String>? = null
+    var callbackOnTextChange: Callback<String>? = null
 
 
     override fun createView(inflater: LayoutInflater): CustomSearchBinding {
         return CustomSearchBinding.inflate(inflater, this, true)
     }
 
-    @SuppressLint("ClickableViewAccessibility", "Recycle")
     override fun viewCreated(attrs: AttributeSet?) {
 
         binding.ivClose.setOnClickListener {

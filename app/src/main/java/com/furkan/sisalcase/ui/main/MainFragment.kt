@@ -39,12 +39,6 @@ class MainFragment : BaseFragment<MainFragmentBinding>() {
 
         observeData()
         search()
-
-        if (viewModel.getLastData() != null)
-        {
-            bindRecylerViewData()
-        }
-
     }
 
 
@@ -53,28 +47,30 @@ class MainFragment : BaseFragment<MainFragmentBinding>() {
             binding.progress.visibility = View.VISIBLE
             if (text?.isBlank() == true)
             {
-                    viewModel.getData(text.toString())
                     binding.progress.visibility = View.INVISIBLE
                     binding.error.text = getString(R.string.emtpy_text)
                     binding.error.visibility = View.VISIBLE
             }
             else{
-                viewModel.getData(text.toString())
+                viewModel.getData(text.toString(),requireContext())
             }
         }
     }
 
     private fun observeData(){
         viewModel.getData.observe(viewLifecycleOwner, { it ->
-            data = it
-            bindRecylerViewData()
-        })
-
-        viewModel.error.observe(viewLifecycleOwner, {
-            binding.progress.visibility = View.INVISIBLE
-            binding.error.text = getString(R.string.error_text)
-            binding.error.visibility = View.VISIBLE
-            binding.rycView.visibility = View.INVISIBLE
+            data = it?.data
+            if (!data?.data?.children.isNullOrEmpty())
+            {
+                bindRecylerViewData()
+            }
+            else
+            {
+                binding.progress.visibility = View.INVISIBLE
+                binding.error.text = getString(R.string.error_text)
+                binding.error.visibility = View.VISIBLE
+                binding.rycView.visibility = View.INVISIBLE
+            }
         })
     }
 
@@ -82,7 +78,7 @@ class MainFragment : BaseFragment<MainFragmentBinding>() {
         binding.progress.visibility = View.INVISIBLE
         binding.error.visibility = View.INVISIBLE
         binding.rycView.visibility = View.VISIBLE
-        binding.rycView.adapter = ImageAdapter(viewModel.getLastData()?.data?.children?.filter {!it.data?.thumbnail.isNullOrBlank()} as ArrayList<ChildrenModel>){
+        binding.rycView.adapter = ImageAdapter(data?.data?.children){
             goDetail(it)
         }
     }

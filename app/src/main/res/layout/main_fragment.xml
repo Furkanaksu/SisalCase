@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.main.MainFragment">
 
-    <com.furkan.sisalcase.ui.base.custom_layouts.SearchBar
+    <com.furkan.sisalcase.ui.custom_layouts.SearchBar
         android:id="@+id/searchBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

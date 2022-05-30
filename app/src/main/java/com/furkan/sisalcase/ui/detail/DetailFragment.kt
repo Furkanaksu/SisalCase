@@ -44,6 +44,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>() {
         }
     }
 
+
     override fun layoutResource(
         inflater: LayoutInflater,
         container: ViewGroup?

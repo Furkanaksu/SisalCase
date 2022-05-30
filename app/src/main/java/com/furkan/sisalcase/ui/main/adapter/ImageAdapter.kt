@@ -1,5 +1,6 @@
 package com.furkan.sisalcase.ui.main.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,10 +12,12 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.furkan.sisalcase.R
 import com.furkan.sisalcase.data.model.ChildrenDetailModel
 import com.furkan.sisalcase.data.model.ChildrenModel
+import com.furkan.sisalcase.utils.loadImage
+import java.lang.Exception
 
 class ImageAdapter(
-    val mDataSet: ArrayList<ChildrenModel>? = arrayListOf(),
-    val itemClickDetail: ((ChildrenDetailModel) -> Unit)?
+    private val mDataSet: ArrayList<ChildrenModel>? = arrayListOf(),
+    private val itemClickDetail: ((ChildrenDetailModel) -> Unit)?
 ) :
     RecyclerView.Adapter<ImageAdapter.ViewHolder>() {
 
@@ -31,21 +34,28 @@ class ImageAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if (mDataSet != null) {
-            val data = mDataSet.get(position)?.data
+            val data = mDataSet[position].data
 
             if (!data?.thumbnail.isNullOrEmpty())
             {
-                Glide.with(holder.image.context)
-                    .load(data?.thumbnail)
-                    .transform(CenterCrop(), RoundedCorners(25))
-                    .into(holder.image)
+                try {
+                    data?.thumbnail?.let { holder.image.loadImage(it) }
+                }
+                catch (e:Exception)
+                {
+                    e.message?.let { Log.e("Error", it) }
+                }
+
             }
             else if (!data?.url_overridden_by_dest.isNullOrEmpty())
             {
-                Glide.with(holder.image.context)
-                    .load(data?.url_overridden_by_dest)
-                    .transform(CenterCrop(), RoundedCorners(25))
-                    .into(holder.image)
+                try {
+                    data?.url_overridden_by_dest?.let { holder.image.loadImage(it) }
+                }
+                catch (e:Exception)
+                {
+                    e.message?.let { Log.e("Error", it) }
+                }
             }
 
             holder.image.setOnClickListener {

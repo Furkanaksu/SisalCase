@@ -1,6 +1,6 @@
 package com.furkan.sisalcase.data.dto
 
-import com.furkan.sisalcase.utils.Constants.BaseWebservice
+import com.furkan.sisalcase.utils.BaseWebservice
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

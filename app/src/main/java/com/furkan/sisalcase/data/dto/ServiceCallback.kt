@@ -1,9 +1,10 @@
 package com.furkan.sisalcase.data.dto
 
-open class Callback<T>(
+sealed class Resource<T>(
     val data: T? = null,
-    val error: T? = null,
+    val message: String? = null
 ) {
-    class Success<T>(_data: T) : Callback<T>(data = _data)
-    class Failure<T>(_message: T) : Callback<T>(error = _message)
+    class Success<T>(data: T): Resource<T>(data)
+    class Error<T>(message: String, data: T? = null): Resource<T>(data, message)
+    class Loading<T> : Resource<T>()
 }
