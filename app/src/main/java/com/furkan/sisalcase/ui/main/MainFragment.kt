@@ -1,6 +1,7 @@
 package com.furkan.sisalcase.ui.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.furkan.sisalcase.R
 import com.furkan.sisalcase.data.model.ChildrenDetailModel
+import com.furkan.sisalcase.data.model.ChildrenModel
+import com.furkan.sisalcase.data.model.DataModel
 import com.furkan.sisalcase.data.model.ListModel
 import com.furkan.sisalcase.databinding.MainFragmentBinding
 import com.furkan.sisalcase.ui.base.BaseFragment
@@ -22,7 +25,6 @@ import java.io.Serializable
 class MainFragment : BaseFragment<MainFragmentBinding>() {
 
     private val viewModel: MainViewModel by viewModels()
-    private var data: ListModel? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -58,10 +60,9 @@ class MainFragment : BaseFragment<MainFragmentBinding>() {
 
     private fun observeData(){
         viewModel.getData.observe(viewLifecycleOwner, { it ->
-            data = it?.data
-            if (!data?.data?.children.isNullOrEmpty())
+            if (it?.data?.data?.children?.size?:0 > 0)
             {
-                bindRecylerViewData()
+                it?.data?.data?.let { it1 -> bindRecylerViewData(it1) }
             }
             else
             {
@@ -73,11 +74,12 @@ class MainFragment : BaseFragment<MainFragmentBinding>() {
         })
     }
 
-    private fun bindRecylerViewData(){
+    private fun bindRecylerViewData(data: DataModel){
         binding.progress.visibility = View.INVISIBLE
         binding.error.visibility = View.INVISIBLE
         binding.rycView.visibility = View.VISIBLE
-        binding.rycView.adapter = ImageAdapter(data?.data?.children){
+        Log.d("dataaaaa", data.toString())
+        binding.rycView.adapter = ImageAdapter(data.children){
             goDetail(it)
         }
     }

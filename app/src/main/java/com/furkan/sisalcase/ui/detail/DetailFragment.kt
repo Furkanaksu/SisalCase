@@ -14,6 +14,7 @@ import com.furkan.sisalcase.databinding.FragmentDetailBinding
 import com.furkan.sisalcase.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_detail.*
 import androidx.activity.OnBackPressedCallback
+import com.furkan.sisalcase.utils.loadImage
 import java.lang.Exception
 
 
@@ -24,22 +25,26 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>() {
         val data = arguments?.get("data") as ChildrenDetailModel
 
         binding.let {
-            title.append(data.title)
-            author.append(data.author_fullname)
+            if (!data.title.isNullOrEmpty())
+            {
+                title.append(data.title)
+            }
+            if (!data.author_fullname.isNullOrEmpty())
+            {
+                author.append(data.author_fullname)
+            }
 
             if (!data.preview?.images?.get(0)?.source?.url.isNullOrEmpty())
             {
-                Glide.with(requireContext())
-                    .load(data.preview?.images?.get(0)?.source?.url?.replace("amp;",""))
-                    .transform(CenterCrop())
-                    .into(icon)
+                data.preview?.images?.get(0)?.source?.url?.replace("amp;","")?.let {
+                    icon.loadImage(
+                        it
+                    )
+                }
             }
             else
             {
-                Glide.with(requireContext())
-                    .load(data.thumbnail)
-                    .transform(CenterCrop())
-                    .into(icon)
+                data.thumbnail?.let { it1 -> icon.loadImage(it1) }
             }
         }
     }

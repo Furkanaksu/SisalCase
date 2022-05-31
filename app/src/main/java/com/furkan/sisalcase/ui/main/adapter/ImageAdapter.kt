@@ -13,6 +13,7 @@ import com.furkan.sisalcase.R
 import com.furkan.sisalcase.data.model.ChildrenDetailModel
 import com.furkan.sisalcase.data.model.ChildrenModel
 import com.furkan.sisalcase.utils.loadImage
+import kotlinx.android.synthetic.main.fragment_detail.*
 import java.lang.Exception
 
 class ImageAdapter(
@@ -36,10 +37,14 @@ class ImageAdapter(
         if (mDataSet != null) {
             val data = mDataSet[position].data
 
-            if (!data?.thumbnail.isNullOrEmpty())
+            if (!data?.preview?.images?.get(0)?.source?.url?.replace("amp;","").isNullOrEmpty())
             {
                 try {
-                    data?.thumbnail?.let { holder.image.loadImage(it) }
+                    data?.preview?.images?.get(0)?.source?.url?.replace("amp;","")?.let {
+                        holder.image.loadImage(
+                            it
+                        )
+                    }
                 }
                 catch (e:Exception)
                 {
@@ -47,10 +52,10 @@ class ImageAdapter(
                 }
 
             }
-            else if (!data?.url_overridden_by_dest.isNullOrEmpty())
+            else if (!data?.thumbnail.isNullOrEmpty())
             {
                 try {
-                    data?.url_overridden_by_dest?.let { holder.image.loadImage(it) }
+                    data?.thumbnail?.let { holder.image.loadImage(it) }
                 }
                 catch (e:Exception)
                 {
